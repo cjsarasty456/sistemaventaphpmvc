@@ -1,0 +1,5 @@
+esta carpeta contiene los controladores
+
+los controladores son los que reciben las
+peticiones del usuario y muestran las vistas
+
