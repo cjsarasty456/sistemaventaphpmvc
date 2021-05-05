@@ -1,6 +1,8 @@
 <!-- pagina que se carga automaticamente -->
 <h1>Hola mundo</h1>
 <?php
+//se incorpora el archivo de configurción
+require_once("Config/Config.php");
     /*
     para la navegación amigable con el archivo .htaccess se 
     captura los valores ingresado en la url despues de la url raíz
@@ -31,8 +33,29 @@
             array_push($params,$arrUrl[$i]);
         }
     }
+    spl_autoload_register(function($class){
+        if(file_exists(LIBS."/Core/".$class.".php")){
+            require_once(LIBS.'Core/'.$class.".php");
+        }
+    });
+    // carga el controller solicitado
+    $controllerFile="Controllers/".$controller.".php";
+    //se verifica si el controlador existe
+    if(file_exists($controllerFile)){
+        require_once($controllerFile);
+        $controller=new $controller();
+        //validar el metodo
+        if(method_exists($controller,$method)){
+            $controller->{$method}($params);
+        }else{
+            echo "no existe el metodo";
+        }
+
+    }else{
+        echo "no existe el controlador";
+    }
     // print_r($arrUrl);
-    echo "controlador: ".$controller." método: ".$method." parametro: ";
-    print_r($params);
+    // echo "controlador: ".$controller." método: ".$method." parametro: ";
+    // print_r($params);
 ?>
 
